@@ -1,6 +1,21 @@
-# Getting Started with Create React App
+# KORU App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React 16 application built with TypeScript, MobX 5 for state management, and native CSS styling.
+
+## Tech Stack
+
+- **React 16.14.0** - UI library
+- **TypeScript 4.1.6** - Type safety and better development experience
+- **MobX 5.15.7** - State management with reactive programming
+- **Native CSS** - Styling without external CSS frameworks
+- **React Scripts 4.0.3** - Build tooling and development server
+
+## Features
+
+- Interactive counter component with MobX state management
+- Modern responsive design with gradient backgrounds
+- TypeScript support with decorators for MobX
+- Hot reloading development server
 
 ## Available Scripts
 
