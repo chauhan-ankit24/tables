@@ -10,13 +10,42 @@ export interface TableProps {
   data: Array<Record<string, any>>;
 }
 
-const Table: React.FC<TableProps> = observer(({ columns, data }) => {
-  const { page, pageSize } = tableStore;
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
+const Table: React.FC<TableProps> = observer(({ columns }) => {
+  const {
+    page,
+    pageSize,
+    nameQuery,
+    directoryQuery,
+    ownerQuery,
+    tradingPartnerQuery,
+    lastRunQuery,
+    setNameQuery,
+    setDirectoryQuery,
+    setOwnerQuery,
+    setTradingPartnerQuery,
+    setLastRunQuery,
+    filteredData,
+  } = tableStore;
+  const paginatedData = filteredData.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
 
   return (
     <div className="table-flex">
-      <TableAboveRow columns={columns} />
+      <TableAboveRow
+        columns={columns}
+        nameQuery={nameQuery}
+        directoryQuery={directoryQuery}
+        ownerQuery={ownerQuery}
+        tradingPartnerQuery={tradingPartnerQuery}
+        lastRunQuery={lastRunQuery}
+        setNameQuery={setNameQuery}
+        setDirectoryQuery={setDirectoryQuery}
+        setOwnerQuery={setOwnerQuery}
+        setTradingPartnerQuery={setTradingPartnerQuery}
+        setLastRunQuery={setLastRunQuery}
+      />
       <div className="table-scroll">
         {paginatedData.map((row, idx) => (
           <div className="table-row" key={idx + (page - 1) * pageSize}>

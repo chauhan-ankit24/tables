@@ -3,9 +3,31 @@ import "./TableAboveRow.css";
 
 interface TableAboveRowProps {
   columns: string[];
+  nameQuery: string;
+  directoryQuery: string;
+  ownerQuery: string;
+  tradingPartnerQuery: string;
+  lastRunQuery: string;
+  setNameQuery: (q: string) => void;
+  setDirectoryQuery: (q: string) => void;
+  setOwnerQuery: (q: string) => void;
+  setTradingPartnerQuery: (q: string) => void;
+  setLastRunQuery: (q: string) => void;
 }
 
-const TableAboveRow: React.FC<TableAboveRowProps> = ({ columns }) => {
+const TableAboveRow: React.FC<TableAboveRowProps> = ({
+  columns,
+  nameQuery,
+  directoryQuery,
+  ownerQuery,
+  tradingPartnerQuery,
+  lastRunQuery,
+  setNameQuery,
+  setDirectoryQuery,
+  setOwnerQuery,
+  setTradingPartnerQuery,
+  setLastRunQuery,
+}) => {
   return (
     <div className="table-above-row">
       <div className="table-above-row-28">
@@ -27,27 +49,69 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({ columns }) => {
               className={`table-above-row-22-cell col-${colIdx} ${noBorder}`}
               key={col + "-22"}
             >
-              {(colIdx === 0 ||
-                colIdx === 1 ||
-                colIdx === 4 ||
-                colIdx === 9) && (
+              {colIdx === 0 && (
                 <div className="table-search-bar">
                   <input
                     type="text"
                     className="table-search-input"
-                    placeholder=""
-                    onMouseEnter={(e) =>
-                      ((e.target as HTMLInputElement).placeholder = "Search")
-                    }
-                    onMouseLeave={(e) =>
-                      ((e.target as HTMLInputElement).placeholder = "")
-                    }
-                    onFocus={(e) =>
-                      ((e.target as HTMLInputElement).placeholder = "Search")
-                    }
-                    onBlur={(e) =>
-                      ((e.target as HTMLInputElement).placeholder = "")
-                    }
+                    value={nameQuery}
+                    placeholder="Search"
+                    onChange={(e) => setNameQuery(e.target.value)}
+                  />
+                  <span className="table-search-icon">
+                    <img
+                      src={process.env.PUBLIC_URL + "/search.svg"}
+                      alt="search"
+                      width={16}
+                      height={16}
+                    />
+                  </span>
+                  <span className="table-search-icon">
+                    <img
+                      src={process.env.PUBLIC_URL + "/cheveron-down.svg"}
+                      alt="chevron down"
+                      width={16}
+                      height={16}
+                    />
+                  </span>
+                </div>
+              )}
+              {colIdx === 1 && (
+                <div className="table-search-bar">
+                  <input
+                    type="text"
+                    className="table-search-input"
+                    value={directoryQuery}
+                    placeholder="Search"
+                    onChange={(e) => setDirectoryQuery(e.target.value)}
+                  />
+                  <span className="table-search-icon">
+                    <img
+                      src={process.env.PUBLIC_URL + "/search.svg"}
+                      alt="search"
+                      width={16}
+                      height={16}
+                    />
+                  </span>
+                  <span className="table-search-icon">
+                    <img
+                      src={process.env.PUBLIC_URL + "/cheveron-down.svg"}
+                      alt="chevron down"
+                      width={16}
+                      height={16}
+                    />
+                  </span>
+                </div>
+              )}
+              {/* ...existing code for other columns... */}
+              {colIdx === 4 && (
+                <div className="table-search-bar">
+                  <input
+                    type="text"
+                    className="table-search-input"
+                    value={ownerQuery}
+                    placeholder="Search"
+                    onChange={(e) => setOwnerQuery(e.target.value)}
                   />
                   <span className="table-search-icon">
                     <img
@@ -72,26 +136,22 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({ columns }) => {
                   <input
                     type="text"
                     className="table-search-input"
-                    placeholder=""
-                    onMouseEnter={(e) =>
-                      ((e.target as HTMLInputElement).placeholder =
-                        "dd/mm/yyyy hh:mm")
-                    }
-                    onMouseLeave={(e) =>
-                      ((e.target as HTMLInputElement).placeholder = "")
-                    }
-                    onFocus={(e) =>
-                      ((e.target as HTMLInputElement).placeholder =
-                        "dd/mm/yyyy hh:mm")
-                    }
-                    onBlur={(e) =>
-                      ((e.target as HTMLInputElement).placeholder = "")
-                    }
+                    value={lastRunQuery}
+                    placeholder="Search"
+                    onChange={(e) => setLastRunQuery(e.target.value)}
                   />
                   <span className="table-search-icon">
                     <img
                       src={process.env.PUBLIC_URL + "/calendar.svg"}
                       alt="calendar"
+                      width={16}
+                      height={16}
+                    />
+                  </span>
+                  <span className="table-search-icon">
+                    <img
+                      src={process.env.PUBLIC_URL + "/cheveron-down.svg"}
+                      alt="chevron down"
                       width={16}
                       height={16}
                     />
@@ -113,10 +173,37 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({ columns }) => {
                   </span>
                 </div>
               )}
+              {colIdx === 9 && (
+                <div className="table-search-bar">
+                  <input
+                    type="text"
+                    className="table-search-input"
+                    value={tradingPartnerQuery}
+                    placeholder="Search"
+                    onChange={(e) => setTradingPartnerQuery(e.target.value)}
+                  />
+                  <span className="table-search-icon">
+                    <img
+                      src={process.env.PUBLIC_URL + "/search.svg"}
+                      alt="search"
+                      width={16}
+                      height={16}
+                    />
+                  </span>
+                  <span className="table-search-icon">
+                    <img
+                      src={process.env.PUBLIC_URL + "/cheveron-down.svg"}
+                      alt="chevron down"
+                      width={16}
+                      height={16}
+                    />
+                  </span>
+                </div>
+              )}
             </div>
           );
         })}
-      <div className="table-above-row-28-spacer"></div>
+        <div className="table-above-row-28-spacer"></div>
       </div>
     </div>
   );

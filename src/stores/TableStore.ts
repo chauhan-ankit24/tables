@@ -18,8 +18,41 @@ export class TableStore {
   ];
   data: Array<Record<string, any>> = tableData;
 
+  nameQuery: string = "";
+  directoryQuery: string = "";
+  ownerQuery: string = "";
+  tradingPartnerQuery: string = "";
+  lastRunQuery: string = "";
+
   get totalPages() {
-    return Math.ceil(this.data.length / this.pageSize);
+    return Math.ceil(this.filteredData.length / this.pageSize);
+  }
+
+  get filteredData() {
+    return this.data.filter((row) => {
+      const nameMatch = row.Name.toLowerCase().includes(
+        this.nameQuery.toLowerCase()
+      );
+      const dirMatch = row.Directory.toLowerCase().includes(
+        this.directoryQuery.toLowerCase()
+      );
+      const ownerMatch = row.Owner.toLowerCase().includes(
+        this.ownerQuery.toLowerCase()
+      );
+      const tradingPartnerMatch = row["Trading Partner"]
+        ?.toLowerCase()
+        .includes(this.tradingPartnerQuery.toLowerCase());
+      const lastRunMatch = row["Last Run"]
+        ?.toLowerCase()
+        .includes(this.lastRunQuery.toLowerCase());
+      return (
+        nameMatch &&
+        dirMatch &&
+        ownerMatch &&
+        tradingPartnerMatch &&
+        lastRunMatch
+      );
+    });
   }
 
   setPage = (newPage: number) => {
@@ -31,6 +64,31 @@ export class TableStore {
   addRow = (row: Record<string, any>) => {
     this.data.push(row);
   };
+
+  setNameQuery = (q: string) => {
+    this.nameQuery = q;
+    this.page = 1;
+  };
+
+  setDirectoryQuery = (q: string) => {
+    this.directoryQuery = q;
+    this.page = 1;
+  };
+
+  setOwnerQuery = (q: string) => {
+    this.ownerQuery = q;
+    this.page = 1;
+  };
+
+  setTradingPartnerQuery = (q: string) => {
+    this.tradingPartnerQuery = q;
+    this.page = 1;
+  };
+
+  setLastRunQuery = (q: string) => {
+    this.lastRunQuery = q;
+    this.page = 1;
+  };
 }
 
 decorate(TableStore, {
@@ -39,8 +97,19 @@ decorate(TableStore, {
   page: observable,
   pageSize: observable,
   totalPages: computed,
+  nameQuery: observable,
+  directoryQuery: observable,
+  ownerQuery: observable,
+  tradingPartnerQuery: observable,
+  lastRunQuery: observable,
+  filteredData: computed,
   setPage: action,
   addRow: action,
+  setNameQuery: action,
+  setDirectoryQuery: action,
+  setOwnerQuery: action,
+  setTradingPartnerQuery: action,
+  setLastRunQuery: action,
 });
 
 export const tableStore = new TableStore();
