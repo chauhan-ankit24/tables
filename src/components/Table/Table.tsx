@@ -18,13 +18,16 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
               {row[col]}
             </div>
           ))}
-          <div className="table-row-actions">
-            <button className="table-action-btn">View Triggers</button>
-            <button className="table-action-btn">Run</button>
-            <button className="table-action-btn">Edit</button>
-            <span className="table-action-dots">
-              <img src={process.env.PUBLIC_URL + "/dots-vertical.svg"} alt="more" width={20} height={20} />
-            </span>
+          {/* 11th cell for actions */}
+          <div className="table-cell col-10">
+            <div className="table-row-actions">
+              <button className="table-action-btn">View Triggers</button>
+              <button className="table-action-btn">Run</button>
+              <button className="table-action-btn">Edit</button>
+              <span className="table-action-dots">
+                <img src={process.env.PUBLIC_URL + "/dots-vertical.svg"} alt="more" width={20} height={20} />
+              </span>
+            </div>
           </div>
         </div>
       ))}

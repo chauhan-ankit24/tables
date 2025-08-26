@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import { tableStore } from "./stores/TableStore";
 import Table from "./components/Table/Table";
-import TableHeader from "./components/TableHeader/TableHeader";
+import TableMainHeader from "./components/TableMainHeader/TableMainHeader";
 import DirectoryMonitorModal from "./components/DirectoryMonitorModal/DirectoryMonitorModal";
 import { modalStore } from "./stores/ModalStore";
 import "./components/Table/Table.css";
@@ -15,7 +15,7 @@ const App = observer(() => {
         onClose={modalStore.closeDirectoryMonitorModal}
       />
       <div className="table-container">
-        <TableHeader />
+        <TableMainHeader />
         <Table columns={tableStore.columns} data={tableStore.data} />
       </div>
     </div>

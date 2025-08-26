@@ -9,16 +9,12 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({ columns }) => {
   return (
     <div className="table-above-row">
       <div className="table-above-row-28">
-        <div className="table-header-row" style={{ display: "flex" }}>
-          {columns.map((col, colIdx) => (
-            <div
-              className={`table-cell col-${colIdx} table-heading-cell`}
-              key={col}
-            >
-              {col}
-            </div>
-          ))}
-        </div>
+        {columns.map((col, colIdx) => (
+          <div className={`table-heading-cell col-${colIdx}`} key={colIdx}>
+            {col}
+          </div>
+        ))}
+        <div className="table-above-row-28-spacer"></div>
       </div>
       <div className="table-above-row-22">
         {columns.map((col, colIdx) => {
@@ -77,19 +73,37 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({ columns }) => {
                     type="text"
                     className="table-search-input"
                     placeholder=""
-                    onMouseEnter={e => ((e.target as HTMLInputElement).placeholder = "dd/mm/yyyy hh:mm")}
-                    onMouseLeave={e => ((e.target as HTMLInputElement).placeholder = "")}
-                    onFocus={e => ((e.target as HTMLInputElement).placeholder = "dd/mm/yyyy hh:mm")}
-                    onBlur={e => ((e.target as HTMLInputElement).placeholder = "")}
+                    onMouseEnter={(e) =>
+                      ((e.target as HTMLInputElement).placeholder =
+                        "dd/mm/yyyy hh:mm")
+                    }
+                    onMouseLeave={(e) =>
+                      ((e.target as HTMLInputElement).placeholder = "")
+                    }
+                    onFocus={(e) =>
+                      ((e.target as HTMLInputElement).placeholder =
+                        "dd/mm/yyyy hh:mm")
+                    }
+                    onBlur={(e) =>
+                      ((e.target as HTMLInputElement).placeholder = "")
+                    }
                   />
                   <span className="table-search-icon">
-                    <img src={process.env.PUBLIC_URL + "/calendar.svg"} alt="calendar" width={16} height={16} />
+                    <img
+                      src={process.env.PUBLIC_URL + "/calendar.svg"}
+                      alt="calendar"
+                      width={16}
+                      height={16}
+                    />
                   </span>
                 </div>
               )}
               {(colIdx === 7 || colIdx === 8) && (
                 <div className="table-search-bar">
-                  <span className="table-search-icon" style={{ marginLeft: 'auto' }}>
+                  <span
+                    className="table-search-icon"
+                    style={{ marginLeft: "auto" }}
+                  >
                     <img
                       src={process.env.PUBLIC_URL + "/cheveron-down.svg"}
                       alt="chevron down"
@@ -102,6 +116,7 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({ columns }) => {
             </div>
           );
         })}
+      <div className="table-above-row-28-spacer"></div>
       </div>
     </div>
   );

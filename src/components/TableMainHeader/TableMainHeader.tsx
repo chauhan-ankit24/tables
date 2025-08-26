@@ -1,6 +1,6 @@
 import React from "react";
 import { modalStore } from "../../stores/ModalStore";
-import "./TableHeader.css";
+import "./TableMainHeader.css";
 
 const TableHeader: React.FC = () => {
   return (

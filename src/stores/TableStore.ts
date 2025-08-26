@@ -11,7 +11,7 @@ export class TableStore {
     'Last Run',
     'Recursive',
     'Tags',
-    'Trading Partner'
+    'Trading Partner',
   ];
   data: Array<Record<string, any>> = [
     {
@@ -24,7 +24,7 @@ export class TableStore {
       'Last Run': '17/09/2024, 17:05:14',
       Recursive: 'true',
       Tags: '',
-      'Trading Partner': 'REST'
+      'Trading Partner': 'REST',
     },
     {
       Name: 'Test 2',

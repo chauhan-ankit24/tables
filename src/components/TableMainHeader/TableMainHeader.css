@@ -1,11 +1,11 @@
 .table-header-bar {
   display: flex;
   height: 28px;
-  width: 1596px;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
-  background: #EEF5FF;
+  background: #eef5ff;
   padding: 0;
   border-radius: 6px;
   margin-bottom: 8px;
@@ -29,7 +29,8 @@
 
 .table-header-btn {
   display: flex;
-  padding: var(--Custom-Spacings-button-ht-pd, 6px) var(--Custom-Spacings-button-spacing, 8px);
+  padding: var(--Custom-Spacings-button-ht-pd, 6px)
+    var(--Custom-Spacings-button-spacing, 8px);
   justify-content: center;
   align-items: center;
   gap: var(--Padding-p-1, 4px);
@@ -44,6 +45,6 @@
 }
 
 .table-header-btn.add {
-  background: #047E90;
+  background: #047e90;
   color: #fff;
 }
