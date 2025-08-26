@@ -1,3 +1,10 @@
+.table-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
 /* ...existing code... */
 
 /* ----------- */
@@ -16,8 +23,10 @@
   background: var(--Grey-Grey-50, #fff);
   color: #111827;
   height: 28px;
-  width: 1596px;
+  width: 100%;
+  min-width: 0;
   border: 1px solid transparent;
+  margin-bottom: 4px;
 }
 
 .table-row:hover {
