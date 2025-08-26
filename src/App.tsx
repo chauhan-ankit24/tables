@@ -1,22 +1,23 @@
-import * as React from 'react';
-import { observer } from 'mobx-react';
-import { appStore } from './stores/AppStore';
-import Counter from './components/Counter';
-import logo from './logo.svg';
-import './App.css';
+import { observer } from "mobx-react";
+import { tableStore } from "./stores/TableStore";
+import Table from "./components/Table/Table";
+import TableHeader from "./components/TableHeader/TableHeader";
+import DirectoryMonitorModal from "./components/DirectoryMonitorModal/DirectoryMonitorModal";
+import { modalStore } from "./stores/ModalStore";
+import "./components/Table/Table.css";
+import "./App.css";
 
 const App = observer(() => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>KORU App</h1>
-        <p className="app-message">{appStore.message}</p>
-        <Counter store={appStore} />
-        <div className="tech-stack">
-          <p>Built with React 16, TypeScript, MobX 5, and Native CSS</p>
-        </div>
-      </header>
+      <DirectoryMonitorModal
+        isOpen={modalStore.isDirectoryMonitorModalOpen}
+        onClose={modalStore.closeDirectoryMonitorModal}
+      />
+      <div className="table-container">
+        <TableHeader />
+        <Table columns={tableStore.columns} data={tableStore.data} />
+      </div>
     </div>
   );
 });

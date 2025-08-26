@@ -1,68 +1,10 @@
+body {
+  background: #EEF5FF;
+}
+/* Minimal layout styles for app */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 30vmin;
-  pointer-events: none;
-  margin-bottom: 1rem;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  padding: 2rem;
-}
-
-.App-header h1 {
-  margin: 0 0 1rem 0;
-  font-size: 3rem;
-  font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.app-message {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  font-weight: 300;
-  opacity: 0.9;
-}
-
-.tech-stack {
-  margin-top: 2rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-}
-
-.tech-stack p {
+  /* min-height: 100vh; */
+  background: #EEF5FF;
+  padding: 20px;
   margin: 0;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

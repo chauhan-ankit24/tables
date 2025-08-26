@@ -1,0 +1,80 @@
+/* ...existing code... */
+
+/* ----------- */
+.table-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #eef5ff;
+}
+
+.table-row {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  border-radius: var(--Border-Radius-rounded-md, 6px);
+  background: var(--Grey-Grey-50, #fff);
+  color: #111827;
+  height: 28px;
+  width: 1596px;
+}
+
+.table-row:hover {
+  border-radius: 6px;
+  border: 1px solid var(--Turquoise-Turquoise-400, #d2eeee);
+  background: var(--Turquoise-Turquoise-200, #e8f9f9);
+}
+
+.table-cell {
+  padding: 6px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--Black-Black-900, #082029);
+  text-overflow: ellipsis;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: var(--Font-Size-text-base, 12px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-text-base, 16px);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.table-cell.col-0 {
+  color: var(--Teal-Teal-800, #047e90);
+  font-weight: 500;
+  width: 184px;
+}
+
+.table-cell.col-1 {
+  width: 184px;
+}
+.table-cell.col-2 {
+  width: 124px;
+}
+.table-cell.col-3 {
+  width: 104px;
+}
+.table-cell.col-4 {
+  width: 124px;
+}
+.table-cell.col-5 {
+  width: 124px;
+}
+.table-cell.col-6 {
+  width: 124px;
+}
+.table-cell.col-7 {
+  width: 124px;
+}
+.table-cell.col-8 {
+  width: 124px;
+}
+.table-cell.col-9 {
+  width: 124px;
+}
+
+.table-cell:last-child {
+  border-right: none;
+}
