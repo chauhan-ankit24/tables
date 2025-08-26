@@ -1,5 +1,5 @@
 import { observable, computed, action, decorate } from "mobx";
-import tableData from "./tableData";
+import tableData from "../Data/tableData";
 
 export class TableStore {
   page: number = 1;
@@ -16,7 +16,7 @@ export class TableStore {
     "Tags",
     "Trading Partner",
   ];
-  data: Array<Record<string, any>> = tableData;
+  data: Array<Record<string, unknown>> = tableData;
 
   nameQuery: string = "";
   directoryQuery: string = "";
@@ -30,21 +30,25 @@ export class TableStore {
 
   get filteredData() {
     return this.data.filter((row) => {
-      const nameMatch = row.Name.toLowerCase().includes(
-        this.nameQuery.toLowerCase()
-      );
-      const dirMatch = row.Directory.toLowerCase().includes(
-        this.directoryQuery.toLowerCase()
-      );
-      const ownerMatch = row.Owner.toLowerCase().includes(
-        this.ownerQuery.toLowerCase()
-      );
-      const tradingPartnerMatch = row["Trading Partner"]
-        ?.toLowerCase()
-        .includes(this.tradingPartnerQuery.toLowerCase());
-      const lastRunMatch = row["Last Run"]
-        ?.toLowerCase()
-        .includes(this.lastRunQuery.toLowerCase());
+      const nameMatch =
+        typeof (row as { Name?: string }).Name === "string" &&
+        (row as { Name: string }).Name.toLowerCase().includes(
+          this.nameQuery.toLowerCase()
+        );
+      const dirMatch =
+        typeof row.Directory === "string" &&
+        row.Directory.toLowerCase().includes(this.directoryQuery.toLowerCase());
+      const ownerMatch =
+        typeof row.Owner === "string" &&
+        row.Owner.toLowerCase().includes(this.ownerQuery.toLowerCase());
+      const tradingPartnerMatch =
+        typeof row["Trading Partner"] === "string" &&
+        row["Trading Partner"]
+          .toLowerCase()
+          .includes(this.tradingPartnerQuery.toLowerCase());
+      const lastRunMatch =
+        typeof row["Last Run"] === "string" &&
+        row["Last Run"].toLowerCase().includes(this.lastRunQuery.toLowerCase());
       return (
         nameMatch &&
         dirMatch &&
@@ -61,7 +65,7 @@ export class TableStore {
     }
   };
 
-  addRow = (row: Record<string, any>) => {
+  addRow = (row: Record<string, unknown>) => {
     this.data.push(row);
   };
 

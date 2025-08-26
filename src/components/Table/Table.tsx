@@ -7,7 +7,7 @@ import TableAboveRow from "../TableAboveRow/TableAboveRow";
 
 export interface TableProps {
   columns: string[];
-  data: Array<Record<string, any>>;
+  data: Array<Record<string, unknown>>;
 }
 
 const Table: React.FC<TableProps> = observer(({ columns }) => {
