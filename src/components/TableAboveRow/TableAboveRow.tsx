@@ -31,11 +31,14 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({
   return (
     <div className="table-above-row">
       <div className="table-above-row-28">
-        {columns.map((col, colIdx) => (
-          <div className={`table-heading-cell col-${colIdx}`} key={colIdx}>
-            {col}
-          </div>
-        ))}
+        {columns.map((col, colIdx) => {
+          const header = col.charAt(0).toUpperCase() + col.slice(1);
+          return (
+            <div className={`table-heading-cell col-${colIdx}`} key={colIdx}>
+              {header}
+            </div>
+          );
+        })}
         <div className="table-above-row-28-spacer"></div>
       </div>
       <div className="table-above-row-22">

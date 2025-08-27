@@ -1,6 +1,9 @@
 import React from "react";
+import DirectoryMonitorModal from "../DirectoryMonitorModal/DirectoryMonitorModal";
 import { observer } from "mobx-react";
 import { tableStore } from "../../stores/TableStore";
+import { TableRowKeys } from "../../constants/table";
+import { modalStore } from "../../stores/ModalStore";
 import Pagination from "../Pagination/Pagination";
 import "./Table.css";
 import TableAboveRow from "../TableAboveRow/TableAboveRow";
@@ -59,7 +62,24 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
               <div className="table-row-actions">
                 <button className="table-action-btn">View Triggers</button>
                 <button className="table-action-btn">Run</button>
-                <button className="table-action-btn">Edit</button>
+                <button
+                  className="table-action-btn"
+                  onClick={() => {
+                    modalStore.resetModalData();
+                    modalStore.openDirectoryMonitorModal();
+                    modalStore.setModalData(row);
+                    modalStore.originalRowName = row[
+                      TableRowKeys.name
+                    ] as string;
+                    modalStore.isAddMode = false;
+                    console.log(
+                      "Clicked row name:",
+                      modalStore.originalRowName
+                    );
+                  }}
+                >
+                  Edit
+                </button>
                 <span className="table-action-dots">
                   <img
                     src={process.env.PUBLIC_URL + "/dots-vertical.svg"}
@@ -73,6 +93,51 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
           </div>
         ))}
       </div>
+
+      <DirectoryMonitorModal
+        isOpen={modalStore.isDirectoryMonitorModalOpen}
+        onClose={() => {
+          modalStore.closeDirectoryMonitorModal();
+        }}
+        data={modalStore.modalData}
+        onFieldChange={(field, value) => {
+          modalStore.setModalData({ [field]: value });
+        }}
+        onOk={() => {
+          if (modalStore.isAddMode) {
+            // Add new row at the top
+            tableStore.data.unshift({ ...modalStore.modalData });
+            // Reset all filters so new row is visible
+            tableStore.setNameQuery("");
+            tableStore.setDirectoryQuery("");
+            tableStore.setOwnerQuery("");
+            tableStore.setTradingPartnerQuery("");
+            tableStore.setLastRunQuery("");
+            console.log("Added Row:", modalStore.modalData);
+          } else {
+            // Only update keys present in the table row
+            const rowIdx = tableStore.data.findIndex(
+              (row) => row[TableRowKeys.name] === modalStore.originalRowName
+            );
+            if (rowIdx !== -1) {
+              const row = tableStore.data[rowIdx];
+              Object.keys(row).forEach((key) => {
+                if (key in modalStore.modalData) {
+                  (row as any)[key] = (modalStore.modalData as any)[key];
+                }
+              });
+              modalStore.originalRowName = "";
+              console.log("Updated Row:", modalStore.originalRowName, row);
+            }
+          }
+          modalStore.closeDirectoryMonitorModal();
+          modalStore.originalRowName = "";
+          modalStore.setModalData({});
+        }}
+        onCancel={() => {
+          modalStore.closeDirectoryMonitorModal();
+        }}
+      />
       <Pagination />
     </div>
   );

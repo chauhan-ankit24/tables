@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { observer } from "mobx-react";
 import CustomCheckbox from "./CustomCheckbox";
 import "./DirectoryMonitorModal.css";
 
 interface DirectoryMonitorProps {
   onClose?: () => void;
-  onOk?: (data: DirectoryMonitorData) => void;
+  onOk?: () => void;
   onCancel?: () => void;
   isOpen?: boolean;
+  data: DirectoryMonitorData;
+  onFieldChange: (field: keyof DirectoryMonitorData, value: any) => void;
 }
 
-interface DirectoryMonitorData {
+export interface DirectoryMonitorData {
   name: string;
   tradingPartner: string;
   directory: string;
@@ -40,51 +43,18 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
   onOk,
   onCancel,
   isOpen = true,
+  data,
+  onFieldChange,
 }) => {
-  const [formData, setFormData] = useState<DirectoryMonitorData>({
-    name: "",
-    tradingPartner: "test",
-    directory: "",
-    monitorRecursively: true,
-    monitorInterval: 600,
-    latencyPeriod: 5,
-    owner: "hari",
-    enable: true,
-    quotaOf: 100,
-    monitorFileAdd: true,
-    monitorFileChange: true,
-    monitorFileDelete: true,
-    monitorFailure: true,
-    fileExceedsAge: 1,
-    fileExceedsAgeDays: "day(s)",
-    raiseEventIfMonitor: 1,
-    raiseEventIfMonitorDays: "day(s)",
-    raiseEventsOn: "first",
-    raiseEventsInstance: "",
-    tags: ["Security", "API"],
-    enableType: "soft",
-    quotaUnit: "MiB",
-    thirdOption: "option1",
-  });
-
   const handleInputChange = (field: keyof DirectoryMonitorData, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    onFieldChange(field, value);
   };
-
   const handleCheckboxChange = (field: keyof DirectoryMonitorData) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
+    onFieldChange(field, !data[field]);
   };
-
   const handleOk = () => {
-    onOk?.(formData);
+    onOk?.();
   };
-
   const handleCancel = () => {
     onCancel?.();
   };
@@ -115,7 +85,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
                 <input
                   type="text"
                   id="name"
-                  value={formData.name}
+                  value={data.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   className="form-input"
                 />
@@ -131,9 +101,8 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
                   id="use-trading-partner-check"
                 />
                 <select
-                  // type="text"
                   id="trading-partner"
-                  value={formData.tradingPartner}
+                  value={data.tradingPartner}
                   onChange={(e) =>
                     handleInputChange("tradingPartner", e.target.value)
                   }
@@ -151,7 +120,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
                   <input
                     type="text"
                     id="directory"
-                    value={formData.directory}
+                    value={data.directory}
                     onChange={(e) =>
                       handleInputChange("directory", e.target.value)
                     }
@@ -168,7 +137,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
               <div className="input-wrapper input-flex">
                 <label htmlFor="monitor-recursively">Monitor recursively</label>
                 <CustomCheckbox
-                  checked={formData.monitorRecursively}
+                  checked={data.monitorRecursively}
                   onChange={() => handleCheckboxChange("monitorRecursively")}
                   id="monitor-recursively"
                 />
@@ -190,7 +159,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
               <input
                 type="number"
                 id="monitor-interval"
-                value={formData.monitorInterval}
+                value={data.monitorInterval}
                 onChange={(e) =>
                   handleInputChange("monitorInterval", parseInt(e.target.value))
                 }
@@ -209,7 +178,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
               <input
                 type="number"
                 id="latency-period"
-                value={formData.latencyPeriod}
+                value={data.latencyPeriod}
                 onChange={(e) =>
                   handleInputChange("latencyPeriod", parseInt(e.target.value))
                 }
@@ -228,7 +197,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
                 />
                 <select
                   id="owner"
-                  value={formData.owner}
+                  value={data.owner}
                   onChange={(e) => handleInputChange("owner", e.target.value)}
                   className="form-select"
                 >
@@ -243,13 +212,13 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
               <label htmlFor="enable">Enable</label>
               <div className="input-wrapper input-flex">
                 <CustomCheckbox
-                  checked={formData.enable}
+                  checked={data.enable}
                   onChange={() => handleCheckboxChange("enable")}
                   id="enable-check"
                 />
                 <select
                   id="enable-type"
-                  value={formData.enableType || "soft"}
+                  value={data.enableType || "soft"}
                   onChange={(e) =>
                     handleInputChange("enableType", e.target.value)
                   }
@@ -262,7 +231,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
                 <span className="quota-of-text">quota of</span>
                 <select
                   id="quota-unit"
-                  value={formData.quotaUnit || "MiB"}
+                  value={data.quotaUnit || "MiB"}
                   onChange={(e) =>
                     handleInputChange("quotaUnit", e.target.value)
                   }
@@ -273,7 +242,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
                 </select>
                 <select
                   id="third-option"
-                  value={formData.thirdOption || "option1"}
+                  value={data.thirdOption || "option1"}
                   onChange={(e) =>
                     handleInputChange("thirdOption", e.target.value)
                   }
@@ -294,7 +263,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             <div className="form-group checkbox-group">
               <label htmlFor="monitor-file-add">Monitor file add</label>
               <CustomCheckbox
-                checked={formData.monitorFileAdd}
+                checked={data.monitorFileAdd}
                 onChange={() => handleCheckboxChange("monitorFileAdd")}
                 id="monitor-file-add"
               />
@@ -303,7 +272,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             <div className="form-group checkbox-group">
               <label htmlFor="monitor-file-change">Monitor file change</label>
               <CustomCheckbox
-                checked={formData.monitorFileChange}
+                checked={data.monitorFileChange}
                 onChange={() => handleCheckboxChange("monitorFileChange")}
                 id="monitor-file-change"
               />
@@ -312,7 +281,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             <div className="form-group checkbox-group">
               <label htmlFor="monitor-file-delete">Monitor file delete</label>
               <CustomCheckbox
-                checked={formData.monitorFileDelete}
+                checked={data.monitorFileDelete}
                 onChange={() => handleCheckboxChange("monitorFileDelete")}
                 id="monitor-file-delete"
               />
@@ -321,7 +290,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             <div className="form-group checkbox-group">
               <label htmlFor="monitor-failure">Monitor failure</label>
               <CustomCheckbox
-                checked={formData.monitorFailure}
+                checked={data.monitorFailure}
                 onChange={() => handleCheckboxChange("monitorFailure")}
                 id="monitor-failure"
               />
@@ -337,14 +306,14 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
               <input
                 type="number"
                 id="file-exceeds-age"
-                value={formData.fileExceedsAge}
+                value={data.fileExceedsAge}
                 onChange={(e) =>
                   handleInputChange("fileExceedsAge", parseInt(e.target.value))
                 }
                 className="form-input-small"
               />
               <select
-                value={formData.fileExceedsAgeDays}
+                value={data.fileExceedsAgeDays}
                 onChange={(e) =>
                   handleInputChange("fileExceedsAgeDays", e.target.value)
                 }
@@ -365,7 +334,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
               />
               <input
                 type="number"
-                value={formData.raiseEventIfMonitor}
+                value={data.raiseEventIfMonitor}
                 onChange={(e) =>
                   handleInputChange(
                     "raiseEventIfMonitor",
@@ -375,7 +344,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
                 className="form-input-small"
               />
               <select
-                value={formData.raiseEventIfMonitorDays}
+                value={data.raiseEventIfMonitorDays}
                 onChange={(e) =>
                   handleInputChange("raiseEventIfMonitorDays", e.target.value)
                 }
@@ -391,7 +360,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
               <label htmlFor="raise-events-on">Raise events on</label>
               <select
                 id="raise-events-on"
-                value={formData.raiseEventsOn}
+                value={data.raiseEventsOn}
                 onChange={(e) =>
                   handleInputChange("raiseEventsOn", e.target.value)
                 }
@@ -413,14 +382,14 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
               <label htmlFor="tags">Tags</label>
               <div className="tags-container">
                 <div className="tags-input">
-                  {formData.tags.map((tag, index) => (
+                  {data.tags.map((tag, index) => (
                     <span key={index} className="tag">
                       {tag}
                       <button
                         type="button"
                         className="tag-remove"
                         onClick={() => {
-                          const newTags = formData.tags.filter(
+                          const newTags = data.tags.filter(
                             (_, i) => i !== index
                           );
                           handleInputChange("tags", newTags);
@@ -452,4 +421,4 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
   );
 };
 
-export default DirectoryMonitor;
+export default observer(DirectoryMonitor);

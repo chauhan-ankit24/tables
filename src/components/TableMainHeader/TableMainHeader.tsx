@@ -9,7 +9,12 @@ const TableHeader: React.FC = () => {
       <div className="table-header-actions">
         <button
           className="table-header-btn add"
-          onClick={modalStore.openDirectoryMonitorModal}
+          onClick={() => {
+            modalStore.resetModalData();
+            modalStore.originalRowName = "";
+            modalStore.isAddMode = true;
+            modalStore.openDirectoryMonitorModal();
+          }}
         >
           + Add
         </button>

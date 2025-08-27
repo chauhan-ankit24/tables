@@ -1,20 +1,21 @@
 import { observable, computed, action, decorate } from "mobx";
 import tableData from "../Data/tableData";
+import { TableRowKeys } from "../constants/table";
 
 export class TableStore {
   page: number = 1;
   pageSize: number = 10;
   columns: string[] = [
-    "Name",
-    "Directory",
-    "Interval",
-    "Quota",
-    "Owner",
-    "Events",
-    "Last Run",
-    "Recursive",
-    "Tags",
-    "Trading Partner",
+    TableRowKeys.name,
+    TableRowKeys.directory,
+    TableRowKeys.interval,
+    TableRowKeys.quota,
+    TableRowKeys.owner,
+    TableRowKeys.events,
+    TableRowKeys.lastRun,
+    TableRowKeys.recursive,
+    TableRowKeys.tags,
+    TableRowKeys.tradingPartner,
   ];
   data: Array<Record<string, unknown>> = tableData;
 
@@ -31,24 +32,30 @@ export class TableStore {
   get filteredData() {
     return this.data.filter((row) => {
       const nameMatch =
-        typeof (row as { Name?: string }).Name === "string" &&
-        (row as { Name: string }).Name.toLowerCase().includes(
-          this.nameQuery.toLowerCase()
-        );
+        typeof row[TableRowKeys.name] === "string" &&
+        (row[TableRowKeys.name] as string)
+          .toLowerCase()
+          .includes(this.nameQuery.toLowerCase());
       const dirMatch =
-        typeof row.Directory === "string" &&
-        row.Directory.toLowerCase().includes(this.directoryQuery.toLowerCase());
+        typeof row[TableRowKeys.directory] === "string" &&
+        (row[TableRowKeys.directory] as string)
+          .toLowerCase()
+          .includes(this.directoryQuery.toLowerCase());
       const ownerMatch =
-        typeof row.Owner === "string" &&
-        row.Owner.toLowerCase().includes(this.ownerQuery.toLowerCase());
+        typeof row[TableRowKeys.owner] === "string" &&
+        (row[TableRowKeys.owner] as string)
+          .toLowerCase()
+          .includes(this.ownerQuery.toLowerCase());
       const tradingPartnerMatch =
-        typeof row["Trading Partner"] === "string" &&
-        row["Trading Partner"]
+        typeof row[TableRowKeys.tradingPartner] === "string" &&
+        (row[TableRowKeys.tradingPartner] as string)
           .toLowerCase()
           .includes(this.tradingPartnerQuery.toLowerCase());
       const lastRunMatch =
-        typeof row["Last Run"] === "string" &&
-        row["Last Run"].toLowerCase().includes(this.lastRunQuery.toLowerCase());
+        typeof row[TableRowKeys.lastRun] === "string" &&
+        (row[TableRowKeys.lastRun] as string)
+          .toLowerCase()
+          .includes(this.lastRunQuery.toLowerCase());
       return (
         nameMatch &&
         dirMatch &&
@@ -66,7 +73,7 @@ export class TableStore {
   };
 
   addRow = (row: Record<string, unknown>) => {
-    this.data.push(row);
+    this.data.unshift(row);
   };
 
   setNameQuery = (q: string) => {
@@ -93,6 +100,15 @@ export class TableStore {
     this.lastRunQuery = q;
     this.page = 1;
   };
+
+  updateRow = (updatedRow: Record<string, unknown>) => {
+    const idx = this.data.findIndex(
+      (row) => row[TableRowKeys.name] === updatedRow[TableRowKeys.name]
+    );
+    if (idx !== -1) {
+      this.data[idx] = { ...this.data[idx], ...updatedRow };
+    }
+  };
 }
 
 decorate(TableStore, {
@@ -114,6 +130,7 @@ decorate(TableStore, {
   setOwnerQuery: action,
   setTradingPartnerQuery: action,
   setLastRunQuery: action,
+  updateRow: action,
 });
 
 export const tableStore = new TableStore();
