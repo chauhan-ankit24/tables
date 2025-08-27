@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import CustomCheckbox from "./CustomCheckbox";
 import "./DirectoryMonitorModal.css";
+import { modalStore } from "../../stores/ModalStore";
 
 interface DirectoryMonitorProps {
   onClose?: () => void;
@@ -410,7 +411,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
 
         <div className="dialog-footer">
           <button className="btn btn-primary" onClick={handleOk}>
-            OK
+            {modalStore.isAddMode ? "OK" : "Update"}
           </button>
           <button className="btn btn-secondary" onClick={handleCancel}>
             Cancel

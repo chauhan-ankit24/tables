@@ -1,45 +1,75 @@
-/* Pagination UI styles */
+/* --- Pagination Controls Container --- */
 .pagination-controls {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: #f5f9ff;
-  padding: 12px 0;
-  gap: 8px;
+  padding: 12px 16px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
 }
-.pagination-controls select {
-  font-size: 1rem;
-  padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  background: #fff;
-  margin-right: 12px;
+
+/* --- Button Group --- */
+.pagination-btn-group {
+  display: flex;
+  gap: 0px;
 }
+
+/* --- Pagination Buttons --- */
 .pagination-controls button {
-  padding: 4px 10px;
   font-size: 1.1rem;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  background: #f7f7f7;
+  border: none;
+  background: transparent;
   cursor: pointer;
   color: #333;
   transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .pagination-controls button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.pagination-controls input[type="number"] {
-  font-size: 1rem;
+
+/* --- Pagination Input --- */
+.pagination-input {
+  display: flex;
+  width: 80px;
+  height: 20px;
+  align-items: center;
+  font-size: 0.875rem;
   padding: 2px 6px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  width: 48px;
   text-align: center;
   margin: 0 4px;
 }
-.pagination-controls span {
-  font-size: 1rem;
-  margin: 0 4px;
-  color: #1a2a3a;
+
+/* --- Typography for Pagination --- */
+.pagination-typo {
+  color: var(--Black-Black-900, #082029);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: var(--Font-Size-text-base, 12px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-text-base, 16px);
+}
+
+/* --- Pagination Select Dropdown --- */
+.pagination-controls select {
+  border: none;
+  background: none;
+  font-size: var(--Font-Size-text-base, 12px);
+  color: var(--Black-Black-900, #082029);
+  outline: none;
+  padding: 0 24px 0 0;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23082029" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 25px 25px;
 }

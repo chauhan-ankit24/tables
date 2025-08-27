@@ -1,7 +1,7 @@
 export enum TableRowKeys {
   name = "name",
   directory = "directory",
-  interval = "interval",
+  // interval = "interval",
   quota = "quota",
   owner = "owner",
   events = "events",
@@ -9,6 +9,7 @@ export enum TableRowKeys {
   recursive = "recursive",
   tags = "tags",
   tradingPartner = "tradingPartner",
+  monitorInterval = "monitorInterval",
 }
 
 export interface DirectoryMonitorRow {

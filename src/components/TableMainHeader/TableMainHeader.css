@@ -1,3 +1,12 @@
+/* Refresh icon styles */
+.table-header-refresh {
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  margin-bottom: 2px;
+  vertical-align: middle;
+  cursor: pointer;
+}
 .table-header-bar {
   display: flex;
   height: 28px;
@@ -47,4 +56,6 @@
 .table-header-btn.add {
   background: #047e90;
   color: #fff;
+  width: 59px;
+  height: 28px;
 }

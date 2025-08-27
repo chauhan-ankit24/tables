@@ -8,10 +8,8 @@ import "./App.css";
 const App = observer(() => {
   return (
     <div className="App">
-      <div className="table-container">
-        <TableMainHeader />
-        <Table columns={tableStore.columns} data={tableStore.data} />
-      </div>
+      <TableMainHeader />
+      <Table columns={tableStore.columns} data={tableStore.data} />
     </div>
   );
 });

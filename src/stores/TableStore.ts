@@ -8,7 +8,9 @@ export class TableStore {
   columns: string[] = [
     TableRowKeys.name,
     TableRowKeys.directory,
-    TableRowKeys.interval,
+    // TableRowKeys.monitorInterval,
+    // TableRowKeys.interval removed, only monitorInterval used for interval column
+    TableRowKeys.monitorInterval,
     TableRowKeys.quota,
     TableRowKeys.owner,
     TableRowKeys.events,

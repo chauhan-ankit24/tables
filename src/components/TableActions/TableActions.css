@@ -1,0 +1,62 @@
+/* Table cell base styles */
+.table-cell {
+  padding: 6px 8px;
+  color: var(--Black-Black-900, #082029);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: var(--Font-Size-text-base, 12px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-text-base, 16px);
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.table-cell.col-10 {
+  flex: 0 0 200px;
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.table-row-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Action button styles (typo) */
+.table-action-btn {
+  display: flex;
+  height: 22px;
+  padding: var(--Custom-Spacings-button-ht-pd, 6px)
+    var(--Padding-p-1point5, 6px);
+  justify-content: center;
+  align-items: center;
+  gap: var(--Padding-p-1, 4px);
+  border-radius: var(--Border-Radius-rounded-md, 6px);
+  border: 1px solid var(--Black-Black-900, #082029);
+  background: var(--Grey-Grey-50, #fff);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.table-action-btn:hover {
+  background: #e0e0e0;
+}
+
+.table-action-dots {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

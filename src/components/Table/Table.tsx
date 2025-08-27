@@ -1,12 +1,19 @@
 import React from "react";
-import DirectoryMonitorModal from "../DirectoryMonitorModal/DirectoryMonitorModal";
 import { observer } from "mobx-react";
+
+// Stores and constants
 import { tableStore } from "../../stores/TableStore";
-import { TableRowKeys } from "../../constants/table";
 import { modalStore } from "../../stores/ModalStore";
-import Pagination from "../Pagination/Pagination";
-import "./Table.css";
+import { TableRowKeys } from "../../constants/table";
+
+// Components
+import DirectoryMonitorModal from "../DirectoryMonitorModal/DirectoryMonitorModal";
 import TableAboveRow from "../TableAboveRow/TableAboveRow";
+import TableRow from "../TableRow/TableRow";
+import Pagination from "../Pagination/Pagination";
+
+// Styles
+import "./Table.css";
 
 export interface TableProps {
   columns: string[];
@@ -29,10 +36,60 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
     setLastRunQuery,
     filteredData,
   } = tableStore;
-  const paginatedData = filteredData.slice(
-    (page - 1) * pageSize,
-    page * pageSize
+
+  // Memoize paginated data for performance
+  const paginatedData = React.useMemo(
+    () => filteredData.slice((page - 1) * pageSize, page * pageSize),
+    [filteredData, page, pageSize]
   );
+
+  // Handlers
+  const handleEdit = (row: Record<string, unknown>) => {
+    modalStore.resetModalData();
+    modalStore.openDirectoryMonitorModal();
+    modalStore.setModalData(row);
+    modalStore.originalRowName = row[TableRowKeys.name] as string;
+    modalStore.isAddMode = false;
+    // Optionally remove console.log in production
+    // console.log("Clicked row name:", modalStore.originalRowName);
+  };
+
+  const handleModalOk = () => {
+    if (modalStore.isAddMode) {
+      tableStore.data.unshift({ ...modalStore.modalData });
+      tableStore.setNameQuery("");
+      tableStore.setDirectoryQuery("");
+      tableStore.setOwnerQuery("");
+      tableStore.setTradingPartnerQuery("");
+      tableStore.setLastRunQuery("");
+      // console.log("Added Row:", modalStore.modalData);
+    } else {
+      const rowIdx = tableStore.data.findIndex(
+        (row) => row[TableRowKeys.name] === modalStore.originalRowName
+      );
+      if (rowIdx !== -1) {
+        const row = tableStore.data[rowIdx];
+        Object.keys(row).forEach((key) => {
+          if (key in modalStore.modalData) {
+            (row as any)[key] = (modalStore.modalData as any)[key];
+          }
+        });
+        modalStore.originalRowName = "";
+        // console.log("Updated Row:", modalStore.originalRowName, row);
+      }
+    }
+    modalStore.closeDirectoryMonitorModal();
+    modalStore.originalRowName = "";
+    modalStore.setModalData({});
+  };
+
+  const handleModalCancel = () => {
+    modalStore.closeDirectoryMonitorModal();
+  };
+
+  const handleFieldChange = (field: string, value: unknown) => {
+    modalStore.setModalData({ [field]: value });
+  };
 
   return (
     <div className="table-flex">
@@ -51,92 +108,24 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
       />
       <div className="table-scroll">
         {paginatedData.map((row, idx) => (
-          <div className="table-row" key={idx + (page - 1) * pageSize}>
-            {columns.map((col, colIdx) => (
-              <div className={`table-cell col-${colIdx}`} key={col}>
-                {row[col]}
-              </div>
-            ))}
-            {/* 11th cell for actions */}
-            <div className="table-cell col-10">
-              <div className="table-row-actions">
-                <button className="table-action-btn">View Triggers</button>
-                <button className="table-action-btn">Run</button>
-                <button
-                  className="table-action-btn"
-                  onClick={() => {
-                    modalStore.resetModalData();
-                    modalStore.openDirectoryMonitorModal();
-                    modalStore.setModalData(row);
-                    modalStore.originalRowName = row[
-                      TableRowKeys.name
-                    ] as string;
-                    modalStore.isAddMode = false;
-                    console.log(
-                      "Clicked row name:",
-                      modalStore.originalRowName
-                    );
-                  }}
-                >
-                  Edit
-                </button>
-                <span className="table-action-dots">
-                  <img
-                    src={process.env.PUBLIC_URL + "/dots-vertical.svg"}
-                    alt="more"
-                    width={20}
-                    height={20}
-                  />
-                </span>
-              </div>
-            </div>
-          </div>
+          <TableRow
+            key={idx + (page - 1) * pageSize}
+            row={row}
+            columns={columns}
+            page={page}
+            pageSize={pageSize}
+            onEdit={handleEdit}
+          />
         ))}
       </div>
 
       <DirectoryMonitorModal
         isOpen={modalStore.isDirectoryMonitorModalOpen}
-        onClose={() => {
-          modalStore.closeDirectoryMonitorModal();
-        }}
+        onClose={handleModalCancel}
         data={modalStore.modalData}
-        onFieldChange={(field, value) => {
-          modalStore.setModalData({ [field]: value });
-        }}
-        onOk={() => {
-          if (modalStore.isAddMode) {
-            // Add new row at the top
-            tableStore.data.unshift({ ...modalStore.modalData });
-            // Reset all filters so new row is visible
-            tableStore.setNameQuery("");
-            tableStore.setDirectoryQuery("");
-            tableStore.setOwnerQuery("");
-            tableStore.setTradingPartnerQuery("");
-            tableStore.setLastRunQuery("");
-            console.log("Added Row:", modalStore.modalData);
-          } else {
-            // Only update keys present in the table row
-            const rowIdx = tableStore.data.findIndex(
-              (row) => row[TableRowKeys.name] === modalStore.originalRowName
-            );
-            if (rowIdx !== -1) {
-              const row = tableStore.data[rowIdx];
-              Object.keys(row).forEach((key) => {
-                if (key in modalStore.modalData) {
-                  (row as any)[key] = (modalStore.modalData as any)[key];
-                }
-              });
-              modalStore.originalRowName = "";
-              console.log("Updated Row:", modalStore.originalRowName, row);
-            }
-          }
-          modalStore.closeDirectoryMonitorModal();
-          modalStore.originalRowName = "";
-          modalStore.setModalData({});
-        }}
-        onCancel={() => {
-          modalStore.closeDirectoryMonitorModal();
-        }}
+        onFieldChange={handleFieldChange}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
       />
       <Pagination />
     </div>

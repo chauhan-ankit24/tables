@@ -2,17 +2,19 @@
 .btn.btn-secondary {
   border-radius: var(--Border-Radius-rounded-md, 6px);
   border: 1px solid var(--Black-Black-900, #082029);
-  background: var(--Grey-Grey-50, #FFF);
+  background: var(--Grey-Grey-50, #fff);
   color: var(--Black-Black-900, #082029);
   font-weight: 500;
-  font-size: 16px;
-  padding: var(--Custom-Spacings-button-ht-pd, 6px) var(--Custom-Spacings-button-spacing, 8px);
+  font-size: 14px;
+  padding: var(--Custom-Spacings-button-ht-pd, 6px)
+    var(--Custom-Spacings-button-spacing, 8px);
   cursor: pointer;
 }
 /* Custom style for OK button in modal footer */
 .btn.btn-primary {
   display: flex;
-  padding: var(--Custom-Spacings-button-ht-pd, 6px) var(--Custom-Spacings-button-spacing, 8px);
+  padding: var(--Custom-Spacings-button-ht-pd, 6px)
+    var(--Custom-Spacings-button-spacing, 8px);
   justify-content: center;
   align-items: center;
   gap: var(--Padding-p-1, 4px);
@@ -21,7 +23,7 @@
   background: var(--Teal-Teal-850, #006170);
   color: #fff;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
 }
 /* Tags dropdown container fixed width */

@@ -1,10 +1,8 @@
 body {
-  background: #EEF5FF;
+  background: #eef5ff;
 }
-/* Minimal layout styles for app */
 .App {
-  /* min-height: 100vh; */
-  background: #EEF5FF;
+  background: #eef5ff;
   padding: 20px;
   margin: 0;
 }
