@@ -81,7 +81,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             <h4>Basic</h4>
 
             <div className="form-group">
-              <label htmlFor="name">Name *</label>
+              <label htmlFor="name">Name <span style={{color:'red'}}>*</span></label>
               <div className="input-wrapper">
                 <input
                   type="text"
@@ -115,7 +115,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             </div>
 
             <div className="form-group">
-              <label htmlFor="directory">Directory *</label>
+              <label htmlFor="directory">Directory <span style={{color:'red'}}>*</span></label>
               <div className="input-wrapper">
                 <div className="input-with-button">
                   <input

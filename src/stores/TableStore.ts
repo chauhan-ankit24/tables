@@ -8,8 +8,6 @@ export class TableStore {
   columns: string[] = [
     TableRowKeys.name,
     TableRowKeys.directory,
-    // TableRowKeys.monitorInterval,
-    // TableRowKeys.interval removed, only monitorInterval used for interval column
     TableRowKeys.monitorInterval,
     TableRowKeys.quota,
     TableRowKeys.owner,
@@ -27,12 +25,16 @@ export class TableStore {
   tradingPartnerQuery: string = "";
   lastRunQuery: string = "";
 
+  sortColumn: string = "";
+  sortDirection: 'asc' | 'desc' = 'asc';
+
   get totalPages() {
     return Math.ceil(this.filteredData.length / this.pageSize);
   }
 
   get filteredData() {
-    return this.data.filter((row) => {
+    // Filtering
+    let filtered = this.data.filter((row) => {
       const nameMatch =
         typeof row[TableRowKeys.name] === "string" &&
         (row[TableRowKeys.name] as string)
@@ -66,7 +68,29 @@ export class TableStore {
         lastRunMatch
       );
     });
+    // Sorting
+    if (this.sortColumn) {
+      filtered = filtered.slice().sort((a, b) => {
+        const aVal = a[this.sortColumn];
+        const bVal = b[this.sortColumn];
+        if (aVal == null && bVal == null) return 0;
+        if (aVal == null) return this.sortDirection === 'asc' ? -1 : 1;
+        if (bVal == null) return this.sortDirection === 'asc' ? 1 : -1;
+        if (typeof aVal === 'number' && typeof bVal === 'number') {
+          return this.sortDirection === 'asc' ? aVal - bVal : bVal - aVal;
+        }
+        return this.sortDirection === 'asc'
+          ? String(aVal).localeCompare(String(bVal))
+          : String(bVal).localeCompare(String(aVal));
+      });
+    }
+    return filtered;
   }
+  setSort = (col: string, direction: 'asc' | 'desc') => {
+    this.sortColumn = col;
+    this.sortDirection = direction;
+    this.page = 1;
+  };
 
   setPage = (newPage: number) => {
     if (newPage >= 1 && newPage <= this.totalPages) {
@@ -124,6 +148,8 @@ decorate(TableStore, {
   ownerQuery: observable,
   tradingPartnerQuery: observable,
   lastRunQuery: observable,
+  sortColumn: observable,
+  sortDirection: observable,
   filteredData: computed,
   setPage: action,
   addRow: action,
@@ -132,6 +158,7 @@ decorate(TableStore, {
   setOwnerQuery: action,
   setTradingPartnerQuery: action,
   setLastRunQuery: action,
+  setSort: action,
   updateRow: action,
 });
 

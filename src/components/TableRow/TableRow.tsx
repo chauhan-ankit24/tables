@@ -1,6 +1,7 @@
 import React from "react";
 import { TableRowKeys } from "../../constants/table";
 import "./TableRow.css";
+import "../TableCellWidths.css";
 import TableActions from "../TableActions/TableActions";
 
 export interface TableRowProps {
@@ -19,25 +20,32 @@ const TableRow: React.FC<TableRowProps> = ({
   onEdit,
 }) => {
   return (
-    <div className="table-row" key={row[TableRowKeys.name] as string}>
+    <tr key={row[TableRowKeys.name] as string} className="table-row">
       {columns.map((col, colIdx) => {
-        const cellValue = Array.isArray(row[col])
-          ? (row[col] as string[]).join(", ")
-          : row[col];
+        let cellValue;
+        if (col === "recursive") {
+          const val = row["monitorRecursively"];
+          cellValue = typeof val === "boolean" ? String(val) : "";
+        } else {
+          cellValue = Array.isArray(row[col])
+            ? (row[col] as string[]).join(", ")
+            : row[col];
+        }
         return (
-          <div
-            className={`table-cell col-${colIdx}`}
+          <td
+            className={` table-cell-width-${colIdx} table-cell`}
             key={col}
             title={cellValue ? String(cellValue) : ""}
+            style={colIdx === 0 ? { color: "#047E90" } : {}}
           >
             {cellValue}
-          </div>
+          </td>
         );
       })}
-      <div className="table-cell col-10">
+      <td className="table-cell-width-spacer">
         <TableActions onEdit={() => onEdit(row)} />
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 };
 

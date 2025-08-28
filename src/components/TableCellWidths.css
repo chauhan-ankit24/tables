@@ -1,0 +1,66 @@
+.table-cell-width-0 {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  padding: 6px 8px;
+}
+.table-cell-width-1 {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  padding: 6px 8px;
+}
+.table-cell-width-2 {
+  width: 70px;
+  min-width: 70px;
+  max-width: 70px;
+  padding: 6px 8px;
+}
+.table-cell-width-3 {
+  width: 60px;
+  min-width: 60px;
+  padding: 6px 8px;
+  max-width: 60px;
+}
+.table-cell-width-4 {
+  width: 84px;
+  min-width: 84px;
+  padding: 6px 8px;
+  max-width: 84px;
+}
+.table-cell-width-5 {
+  width: 84px;
+  min-width: 84px;
+  padding: 6px 8px;
+  max-width: 84px;
+}
+.table-cell-width-6 {
+  width: 120px;
+  min-width: 120px;
+  padding: 6px 8px;
+  max-width: 120px;
+}
+.table-cell-width-7 {
+  width: 70px;
+  min-width: 70px;
+  padding: 6px 8px;
+  max-width: 70px;
+}
+.table-cell-width-8 {
+  width: 84px;
+  min-width: 84px;
+  padding: 6px 8px;
+  max-width: 84px;
+}
+.table-cell-width-9 {
+  width: 90px;
+  min-width: 90px;
+  padding: 6px 8px;
+  max-width: 90px;
+}
+.table-cell-width-spacer {
+  width: 214px;
+  min-width: 214px;
+  padding: 6px 8px;
+  max-width: 214px;
+}

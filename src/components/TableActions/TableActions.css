@@ -1,33 +1,3 @@
-/* Table cell base styles */
-.table-cell {
-  padding: 6px 8px;
-  color: var(--Black-Black-900, #082029);
-  font-family: Roboto, Arial, sans-serif;
-  font-size: var(--Font-Size-text-base, 12px);
-  font-style: normal;
-  font-weight: 400;
-  line-height: var(--Line-Height-text-base, 16px);
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  display: block;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 100%;
-}
-
-.table-cell.col-10 {
-  flex: 0 0 200px;
-  width: 200px;
-  min-width: 200px;
-  max-width: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 .table-row-actions {
   display: flex;
   gap: 8px;

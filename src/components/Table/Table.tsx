@@ -105,6 +105,9 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
         setOwnerQuery={setOwnerQuery}
         setTradingPartnerQuery={setTradingPartnerQuery}
         setLastRunQuery={setLastRunQuery}
+        onSort={tableStore.setSort}
+        sortColumn={tableStore.sortColumn}
+        sortDirection={tableStore.sortDirection}
       />
       <div className="table-scroll">
         {paginatedData.map((row, idx) => (

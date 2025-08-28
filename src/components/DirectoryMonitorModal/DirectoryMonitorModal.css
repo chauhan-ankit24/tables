@@ -213,7 +213,7 @@
   overflow: hidden;
   color: var(--Black-Black-550, #404040);
   text-overflow: ellipsis;
-  font-family: Roboto;
+  /* font-family: Roboto; */
   font-size: var(--Font-Size-text-base, 12px);
   font-style: normal;
   font-weight: 400;

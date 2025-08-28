@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
 import "./TableAboveRow.css";
+import "../TableCellWidths.css";
 
 interface TableAboveRowProps {
   columns: string[];
@@ -13,6 +15,9 @@ interface TableAboveRowProps {
   setOwnerQuery: (q: string) => void;
   setTradingPartnerQuery: (q: string) => void;
   setLastRunQuery: (q: string) => void;
+  onSort?: (col: string, direction: "asc" | "desc") => void;
+  sortColumn?: string;
+  sortDirection?: "asc" | "desc";
 }
 
 interface RenderSearchBarProps {
@@ -67,29 +72,25 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({
   setOwnerQuery,
   setTradingPartnerQuery,
   setLastRunQuery,
+  onSort,
+  sortColumn,
+  sortDirection,
 }) => {
+  const handleSort = (col: string) => {
+    if (!onSort) return;
+    let direction: "asc" | "desc" = "asc";
+    if (sortColumn === col && sortDirection === "asc") direction = "desc";
+    onSort(col, direction);
+  };
+
   return (
-    <div className="table-above-row">
-      <div className="table-above-row-28">
+    <thead>
+      <tr className="table-above-row-header">
         {columns.map((col, colIdx) => {
           let header = col.charAt(0).toUpperCase() + col.slice(1);
           if (col === "monitorInterval") header = "Interval";
           if (col === "lastRun") header = "Last Run";
           if (col === "tradingPartner") header = "Trading Partner";
-          return (
-            <div className={`table-heading-cell col-${colIdx}`} key={colIdx}>
-              {header}
-            </div>
-          );
-        })}
-        <div className="table-above-row-28-spacer"></div>
-      </div>
-      <div className="table-above-row-22">
-        {columns.map((col, colIdx) => {
-          const noBorder =
-            colIdx === 2 || colIdx === 3 || colIdx === 5
-              ? "table-above-row-22-cell--no-border"
-              : "";
           let searchBar = null;
           if (colIdx === 0)
             searchBar = renderSearchBar({
@@ -148,18 +149,42 @@ const TableAboveRow: React.FC<TableAboveRowProps> = ({
                 { src: "/cheveron-down.svg", alt: "chevron down" },
               ],
             });
+          // If no searchBar, render a placeholder div for alignment
+          const searchBarArea = searchBar ? (
+            searchBar
+          ) : (
+            <div className="table-above-row-searchbar-placeholder"></div>
+          );
+          // Only show sort icon for sortable columns (example: all columns, or restrict as needed)
           return (
-            <div
-              className={`table-above-row-22-cell col-${colIdx} ${noBorder}`}
-              key={col + "-22"}
+            <th
+              className={`table-heading-cell table-cell-width-${colIdx}`}
+              key={colIdx}
             >
-              {searchBar}
-            </div>
+              <span className="table-heading-title">
+                {header}
+                <ArrowsUpDownIcon
+                  className="sort-icon"
+                  width={10}
+                  height={10}
+                  onClick={() => handleSort(col)}
+                  title={
+                    sortColumn === col
+                      ? sortDirection === "asc"
+                        ? "Sort descending"
+                        : "Sort ascending"
+                      : "Sort"
+                  }
+                />
+              </span>
+              {searchBarArea}
+            </th>
           );
         })}
-        <div className="table-above-row-28-spacer"></div>
-      </div>
-    </div>
+
+        <th className="table-cell-width-spacer table-above-row-header-spacer"></th>
+      </tr>
+    </thead>
   );
 };
 
