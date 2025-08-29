@@ -1,7 +1,7 @@
 import { observable, action, decorate } from "mobx";
 
 
-class DropdownStore {
+export class DropdownStore {
   isOptionsOpen = false;
   openRowId: string | null = null;
 

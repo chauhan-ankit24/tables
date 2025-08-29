@@ -1,6 +1,6 @@
 import { observable, action, decorate } from "mobx";
 
-class DirectoryMonitorModalUIStore {
+export class DirectoryMonitorModalUIStore {
   showTagDropdown = false;
 
   setShowTagDropdown = (value: boolean) => {

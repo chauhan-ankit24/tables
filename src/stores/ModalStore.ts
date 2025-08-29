@@ -2,7 +2,7 @@ import { observable, action, decorate } from "mobx";
 import { getDefaultModalData } from "../utils/modalUtils";
 
 
-class ModalStore {
+export class ModalStore {
   public isAddMode: boolean = false;
   public selectedRowId: string = "";
   public isDirectoryMonitorModalOpen: boolean = false;
