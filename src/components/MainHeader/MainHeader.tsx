@@ -1,9 +1,10 @@
 import React from "react";
-import { modalStore } from "../../stores/ModalStore";
+import { useStores } from "../../hooks/useStores";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import "./MainHeader.scss";
 
 const MainHeader: React.FC = () => {
+  const { modalStore } = useStores();
   return (
     <div className="table-header-bar">
       <span className="table-header-title">

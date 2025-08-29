@@ -1,10 +1,9 @@
 import React from "react";
 import { TagDropdown } from "../TagDropdown/TagDropdown";
-import { directoryMonitorModalUIStore } from "../../stores/DirectoryMonitorModalUIStore";
+import { useStores } from "../../hooks/useStores";
 import { observer } from "mobx-react";
 import CustomCheckbox from "./CustomCheckbox";
 import "./DirectoryMonitorModal.scss";
-import { modalStore } from "../../stores/ModalStore";
 
 interface DirectoryMonitorProps {
   onClose?: () => void;
@@ -49,6 +48,7 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
   data,
   onFieldChange,
 }) => {
+  const { modalStore, directoryMonitorModalUIStore } = useStores();
   const handleInputChange = (field: keyof DirectoryMonitorData, value: any) => {
     onFieldChange(field, value);
   };

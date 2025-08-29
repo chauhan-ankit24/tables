@@ -5,10 +5,8 @@ export const RootStoreContext = React.createContext<RootStore>(rootStore);
 
 export const RootStoreProvider: React.FC<{ children: ReactNode }> = ({
   children,
-}) => {
-  return (
-    <RootStoreContext.Provider value={rootStore}>
-      {children}
-    </RootStoreContext.Provider>
-  );
-};
+}) => (
+  <RootStoreContext.Provider value={rootStore}>
+    {children}
+  </RootStoreContext.Provider>
+);

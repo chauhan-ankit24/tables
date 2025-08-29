@@ -1,4 +1,4 @@
-import { modalStore } from "../../stores/ModalStore";
+import { useStores } from "../../hooks/useStores";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import React from "react";
 import { observer } from "mobx-react";
@@ -17,6 +17,7 @@ export interface TableActionsProps {
 
 const TableActions: React.FC<TableActionsProps> = observer(
   ({ onEdit, rowId, row, openDropdownRowId, setOpenDropdownRowId }) => {
+    const { modalStore } = useStores();
     const dotsRef = React.useRef<HTMLSpanElement>(null);
     // Use dropdownStore for open/close, but keep dropdownCoords local for position
     const [dropdownCoords, setDropdownCoords] = React.useState<{
@@ -98,11 +99,11 @@ const TableActions: React.FC<TableActionsProps> = observer(
                         boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
                       }}
                     >
-                        <OptionsDropDown
-                          row={row}
-                          handleMouseLeaveDropdown={handleMouseLeaveDropdown}
-                          onEdit={onEdit}
-                        />
+                      <OptionsDropDown
+                        row={row}
+                        handleMouseLeaveDropdown={handleMouseLeaveDropdown}
+                        onEdit={onEdit}
+                      />
                     </div>
                   );
                 })(),

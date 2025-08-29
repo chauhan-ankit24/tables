@@ -1,29 +1,23 @@
 import React from "react";
 import { observer } from "mobx-react";
 
-// Stores and constants
-import { tableStore } from "../../stores/TableStore";
-import { modalStore } from "../../stores/ModalStore";
-import { TableRowKeys, DirectoryMonitorRow } from "../../constants/table";
-import { dropdownStore } from "../../stores/DropdownStore";
-
 // Components
 import DirectoryMonitorModal from "../DirectoryMonitorModal/DirectoryMonitorModal";
-import { addTest } from "../../services/api";
 import TableAboveRow from "../TableAboveRow/TableAboveRow";
 import TableRow from "../TableRow/TableRow";
 import Pagination from "../Pagination/Pagination";
 
 // Styles
 import "./Table.scss";
+import { useStores } from "../../hooks/useStores";
+import { DirectoryMonitorRow } from "../../constants/table";
 
-export interface TableProps {
-  columns: string[];
-  data: DirectoryMonitorRow[];
-}
+const Table: React.FC = observer(() => {
+  const { tableStore, modalStore, dropdownStore } = useStores();
 
-const Table: React.FC<TableProps> = observer(({ columns }) => {
   const {
+    columns,
+    data,
     page,
     pageSize,
     nameQuery,
@@ -37,6 +31,9 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
     setTradingPartnerQuery,
     setLastRunQuery,
     filteredData,
+    sortColumn,
+    sortDirection,
+    setSort,
   } = tableStore;
 
   // Use MobX dropdownStore for dropdown state

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { tableStore } from "../../stores/TableStore";
+import { useStores } from "../../hooks/useStores";
 import "./Pagination.css";
 import {
   ChevronDoubleLeftIcon,
@@ -16,6 +16,7 @@ import {
 } from "../../constants/pagination";
 
 const Pagination = observer(() => {
+  const { tableStore } = useStores();
   const { page, totalPages, pageSize, setPage } = tableStore;
 
   const handleRowsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
