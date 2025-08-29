@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
-import "./TableAboveRow.css";
-import "../TableCellWidths.css";
+import "./TableAboveRow.scss";
+import "../TableCellWidths.scss";
 
 interface TableAboveRowProps {
   columns: string[];

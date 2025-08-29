@@ -1,0 +1,27 @@
+export function getDefaultModalData() {
+  return {
+    name: "",
+    tradingPartner: "test",
+    directory: "",
+    monitorRecursively: true,
+    monitorInterval: 600,
+    latencyPeriod: 5,
+    owner: "hari",
+    enable: true,
+    quotaOf: 100,
+    monitorFileAdd: true,
+    monitorFileChange: true,
+    monitorFileDelete: true,
+    monitorFailure: true,
+    fileExceedsAge: 1,
+    fileExceedsAgeDays: "day(s)",
+    raiseEventIfMonitor: 1,
+    raiseEventIfMonitorDays: "day(s)",
+    raiseEventsOn: "first",
+    raiseEventsInstance: "",
+    tags: ["Security", "API"],
+    enableType: "soft",
+    quotaUnit: "MiB",
+    thirdOption: "option1",
+  };
+}

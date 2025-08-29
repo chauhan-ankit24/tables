@@ -1,9 +1,9 @@
 import React from "react";
 import { modalStore } from "../../stores/ModalStore";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
-import "./TableMainHeader.css";
+import "./MainHeader.scss";
 
-const TableHeader: React.FC = () => {
+const MainHeader: React.FC = () => {
   return (
     <div className="table-header-bar">
       <span className="table-header-title">
@@ -18,7 +18,7 @@ const TableHeader: React.FC = () => {
           className="table-header-btn add"
           onClick={() => {
             modalStore.resetModalData();
-            modalStore.originalRowName = "";
+            modalStore.selectedRowId = "";
             modalStore.isAddMode = true;
             modalStore.openDirectoryMonitorModal();
           }}
@@ -30,4 +30,4 @@ const TableHeader: React.FC = () => {
   );
 };
 
-export default TableHeader;
+export default MainHeader;

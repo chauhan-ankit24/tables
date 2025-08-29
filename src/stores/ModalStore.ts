@@ -1,133 +1,72 @@
 import { observable, action, decorate } from "mobx";
+import { getDefaultModalData } from "../utils/modalUtils";
+
 
 class ModalStore {
-  resetModalData = () => {
-    this.originalRowName = "";
-    Object.keys(this.modalData).forEach((key) => {
-      // Set default values for each field
-      switch (key) {
-        case "name":
-          (this.modalData as any)[key] = "";
-          break;
-        case "tradingPartner":
-          (this.modalData as any)[key] = "test";
-          break;
-        case "directory":
-          (this.modalData as any)[key] = "";
-          break;
-        case "monitorRecursively":
-          (this.modalData as any)[key] = true;
-          break;
-        case "monitorInterval":
-          (this.modalData as any)[key] = 600;
-          break;
-        case "latencyPeriod":
-          (this.modalData as any)[key] = 5;
-          break;
-        case "owner":
-          (this.modalData as any)[key] = "hari";
-          break;
-        case "enable":
-          (this.modalData as any)[key] = true;
-          break;
-        case "quotaOf":
-          (this.modalData as any)[key] = 100;
-          break;
-        case "monitorFileAdd":
-          (this.modalData as any)[key] = true;
-          break;
-        case "monitorFileChange":
-          (this.modalData as any)[key] = true;
-          break;
-        case "monitorFileDelete":
-          (this.modalData as any)[key] = true;
-          break;
-        case "monitorFailure":
-          (this.modalData as any)[key] = true;
-          break;
-        case "fileExceedsAge":
-          (this.modalData as any)[key] = 1;
-          break;
-        case "fileExceedsAgeDays":
-          (this.modalData as any)[key] = "day(s)";
-          break;
-        case "raiseEventIfMonitor":
-          (this.modalData as any)[key] = 1;
-          break;
-        case "raiseEventIfMonitorDays":
-          (this.modalData as any)[key] = "day(s)";
-          break;
-        case "raiseEventsOn":
-          (this.modalData as any)[key] = "first";
-          break;
-        case "raiseEventsInstance":
-          (this.modalData as any)[key] = "";
-          break;
-        case "tags":
-          (this.modalData as any)[key] = ["Security", "API"];
-          break;
-        case "enableType":
-          (this.modalData as any)[key] = "soft";
-          break;
-        case "quotaUnit":
-          (this.modalData as any)[key] = "MiB";
-          break;
-        case "thirdOption":
-          (this.modalData as any)[key] = "option1";
-          break;
-        default:
-          (this.modalData as any)[key] = "";
+  public isAddMode: boolean = false;
+  public selectedRowId: string = "";
+  public isDirectoryMonitorModalOpen: boolean = false;
+  public isDeleteModalOpen: boolean = false;
+  public deleteMonitorName: string = "";
+  public deleteMonitorId: string = "";
+  public modalData = observable.object(getDefaultModalData());
+
+  public resetModalData = () => {
+    this.selectedRowId = "";
+    const defaults = getDefaultModalData();
+    Object.keys(defaults).forEach((key) => {
+      (this.modalData as any)[key] = (defaults as any)[key];
+    });
+  };
+
+  public setModalData = (
+    data: Partial<typeof this.modalData> & {
+      selectedRowId?: string;
+      id?: string;
+    }
+  ) => {
+    if (data.selectedRowId !== undefined) {
+      this.selectedRowId = data.selectedRowId;
+    } else if (data.id !== undefined) {
+      this.selectedRowId = data.id;
+    }
+    Object.keys(data).forEach((key) => {
+      if (key !== "selectedRowId" && key !== "id") {
+        (this.modalData as any)[key] = data[key as keyof typeof data];
       }
     });
   };
-  isAddMode: boolean = false;
-  originalRowName: string = "";
-  modalData = observable.object({
-    name: "",
-    tradingPartner: "test",
-    directory: "",
-    monitorRecursively: true,
-    monitorInterval: 600,
-    latencyPeriod: 5,
-    owner: "hari",
-    enable: true,
-    quotaOf: 100,
-    monitorFileAdd: true,
-    monitorFileChange: true,
-    monitorFileDelete: true,
-    monitorFailure: true,
-    fileExceedsAge: 1,
-    fileExceedsAgeDays: "day(s)",
-    raiseEventIfMonitor: 1,
-    raiseEventIfMonitorDays: "day(s)",
-    raiseEventsOn: "first",
-    raiseEventsInstance: "",
-    tags: ["Security", "API"],
-    enableType: "soft",
-    quotaUnit: "MiB",
-    thirdOption: "option1",
-  });
 
-  setModalData = (data: Partial<typeof this.modalData>) => {
-    Object.keys(data).forEach((key) => {
-      (this.modalData as any)[key] = data[key as keyof typeof data];
-    });
-  };
-  isDirectoryMonitorModalOpen = false;
-
-  openDirectoryMonitorModal = () => {
+  public openDirectoryMonitorModal = () => {
     this.isDirectoryMonitorModalOpen = true;
   };
 
-  closeDirectoryMonitorModal = () => {
+  public closeDirectoryMonitorModal = () => {
     this.isDirectoryMonitorModalOpen = false;
+  };
+
+  public openDeleteModal = (monitorName: string, monitorId: string) => {
+    this.isDeleteModalOpen = true;
+    this.deleteMonitorName = monitorName;
+    this.deleteMonitorId = monitorId;
+  };
+
+  public closeDeleteModal = () => {
+    this.isDeleteModalOpen = false;
+    this.deleteMonitorName = "";
+    this.deleteMonitorId = "";
   };
 }
 
 decorate(ModalStore, {
   isDirectoryMonitorModalOpen: observable,
+  isDeleteModalOpen: observable,
+  deleteMonitorName: observable,
+  deleteMonitorId: observable,
   openDirectoryMonitorModal: action,
   closeDirectoryMonitorModal: action,
+  openDeleteModal: action,
+  closeDeleteModal: action,
 });
 
 export const modalStore = new ModalStore();

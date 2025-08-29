@@ -1,7 +1,6 @@
 export enum TableRowKeys {
   name = "name",
   directory = "directory",
-  // interval = "interval",
   quota = "quota",
   owner = "owner",
   events = "events",
@@ -13,6 +12,7 @@ export enum TableRowKeys {
 }
 
 export interface DirectoryMonitorRow {
+  id: string;
   name: string;
   directory: string;
   owner: string;
@@ -41,4 +41,5 @@ export interface DirectoryMonitorRow {
   enableType?: string;
   quotaUnit?: string;
   thirdOption?: string;
+  [key: string]: any;
 }

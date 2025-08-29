@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+import { TagDropdown } from "../TagDropdown/TagDropdown";
+import { directoryMonitorModalUIStore } from "../../stores/DirectoryMonitorModalUIStore";
 import { observer } from "mobx-react";
 import CustomCheckbox from "./CustomCheckbox";
-import "./DirectoryMonitorModal.css";
+import "./DirectoryMonitorModal.scss";
 import { modalStore } from "../../stores/ModalStore";
 
 interface DirectoryMonitorProps {
@@ -59,6 +61,14 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
   const handleCancel = () => {
     onCancel?.();
   };
+  const hiddenDirInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleTagSelect = (tag: string) => {
+    if (!data.tags.includes(tag)) {
+      handleInputChange("tags", [...data.tags, tag]);
+    }
+    directoryMonitorModalUIStore.setShowTagDropdown(false);
+  };
 
   if (!isOpen) return null;
   return (
@@ -81,7 +91,9 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             <h4>Basic</h4>
 
             <div className="form-group">
-              <label htmlFor="name">Name <span style={{color:'red'}}>*</span></label>
+              <label htmlFor="name">
+                Name <span style={{ color: "red" }}>*</span>
+              </label>
               <div className="input-wrapper">
                 <input
                   type="text"
@@ -115,7 +127,9 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             </div>
 
             <div className="form-group">
-              <label htmlFor="directory">Directory <span style={{color:'red'}}>*</span></label>
+              <label htmlFor="directory">
+                Directory <span style={{ color: "red" }}>*</span>
+              </label>
               <div className="input-wrapper">
                 <div className="input-with-button">
                   <input
@@ -127,9 +141,34 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
                     }
                     className="form-input"
                   />
-                  <button type="button" className="browse-button">
+                  <button
+                    type="button"
+                    className="browse-button"
+                    onClick={() => {
+                      if (hiddenDirInputRef.current)
+                        hiddenDirInputRef.current.click();
+                    }}
+                  >
                     Browse
                   </button>
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    ref={hiddenDirInputRef}
+                    // @ts-ignore
+                    webkitdirectory="true"
+                    onChange={(e) => {
+                      const files = e.target.files;
+                      if (files && files.length > 0) {
+                        const fullPath =
+                          (files[0] as any).webkitRelativePath || files[0].name;
+                        const dirPath = fullPath.includes("/")
+                          ? fullPath.split("/")[0]
+                          : fullPath;
+                        handleInputChange("directory", dirPath);
+                      }
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -382,28 +421,10 @@ const DirectoryMonitor: React.FC<DirectoryMonitorProps> = ({
             <div className="form-group">
               <label htmlFor="tags">Tags</label>
               <div className="tags-container">
-                <div className="tags-input">
-                  {data.tags.map((tag, index) => (
-                    <span key={index} className="tag">
-                      {tag}
-                      <button
-                        type="button"
-                        className="tag-remove"
-                        onClick={() => {
-                          const newTags = data.tags.filter(
-                            (_, i) => i !== index
-                          );
-                          handleInputChange("tags", newTags);
-                        }}
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-                <button type="button" className="dropdown-button">
-                  ▼
-                </button>
+                <TagDropdown
+                  tags={data.tags}
+                  onTagsChange={(tags) => handleInputChange("tags", tags)}
+                />
               </div>
             </div>
           </div>

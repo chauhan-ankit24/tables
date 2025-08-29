@@ -4,20 +4,22 @@ import { observer } from "mobx-react";
 // Stores and constants
 import { tableStore } from "../../stores/TableStore";
 import { modalStore } from "../../stores/ModalStore";
-import { TableRowKeys } from "../../constants/table";
+import { TableRowKeys, DirectoryMonitorRow } from "../../constants/table";
+import { dropdownStore } from "../../stores/DropdownStore";
 
 // Components
 import DirectoryMonitorModal from "../DirectoryMonitorModal/DirectoryMonitorModal";
+import { addTest } from "../../services/api";
 import TableAboveRow from "../TableAboveRow/TableAboveRow";
 import TableRow from "../TableRow/TableRow";
 import Pagination from "../Pagination/Pagination";
 
 // Styles
-import "./Table.css";
+import "./Table.scss";
 
 export interface TableProps {
   columns: string[];
-  data: Array<Record<string, unknown>>;
+  data: DirectoryMonitorRow[];
 }
 
 const Table: React.FC<TableProps> = observer(({ columns }) => {
@@ -37,6 +39,8 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
     filteredData,
   } = tableStore;
 
+  // Use MobX dropdownStore for dropdown state
+
   // Memoize paginated data for performance
   const paginatedData = React.useMemo(
     () => filteredData.slice((page - 1) * pageSize, page * pageSize),
@@ -44,42 +48,78 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
   );
 
   // Handlers
-  const handleEdit = (row: Record<string, unknown>) => {
+  const handleEdit = (row: DirectoryMonitorRow) => {
     modalStore.resetModalData();
     modalStore.openDirectoryMonitorModal();
-    modalStore.setModalData(row);
-    modalStore.originalRowName = row[TableRowKeys.name] as string;
+    // Convert tags to array if needed
+    const safeRow = {
+      ...row,
+      tags: Array.isArray(row.tags) ? row.tags : [row.tags],
+    };
+    modalStore.setModalData(safeRow as Partial<typeof modalStore.modalData>);
+    modalStore.selectedRowId = row.id as string;
     modalStore.isAddMode = false;
     // Optionally remove console.log in production
-    // console.log("Clicked row name:", modalStore.originalRowName);
+    // console.log("Clicked row id:", modalStore.selectedRowId);
   };
 
   const handleModalOk = () => {
     if (modalStore.isAddMode) {
-      tableStore.data.unshift({ ...modalStore.modalData });
-      tableStore.setNameQuery("");
-      tableStore.setDirectoryQuery("");
-      tableStore.setOwnerQuery("");
-      tableStore.setTradingPartnerQuery("");
-      tableStore.setLastRunQuery("");
-      // console.log("Added Row:", modalStore.modalData);
+      // Ensure tags is array and id is set
+      const { raiseEventsOn, ...rest } = modalStore.modalData;
+      const newRow: DirectoryMonitorRow = {
+        ...rest,
+        tags: Array.isArray(modalStore.modalData.tags)
+          ? (modalStore.modalData.tags as any)
+          : [modalStore.modalData.tags],
+        id: String(Date.now()),
+        recursive: "",
+        events: raiseEventsOn,
+        lastRun: new Date().toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }),
+      };
+      tableStore.addRow(newRow).then(() => {
+        // tableStore.setNameQuery("");
+        // tableStore.setDirectoryQuery("");
+        // tableStore.setOwnerQuery("");
+        // tableStore.setTradingPartnerQuery("");
+        // tableStore.setLastRunQuery("");
+      });
     } else {
-      const rowIdx = tableStore.data.findIndex(
-        (row) => row[TableRowKeys.name] === modalStore.originalRowName
-      );
-      if (rowIdx !== -1) {
-        const row = tableStore.data[rowIdx];
-        Object.keys(row).forEach((key) => {
-          if (key in modalStore.modalData) {
-            (row as any)[key] = (modalStore.modalData as any)[key];
-          }
-        });
-        modalStore.originalRowName = "";
-        // console.log("Updated Row:", modalStore.originalRowName, row);
-      }
+      // Use store method for update
+      const { raiseEventsOn, ...rest } = modalStore.modalData;
+      const updatedRow: DirectoryMonitorRow = {
+        ...rest,
+        tags: Array.isArray(modalStore.modalData.tags)
+          ? (modalStore.modalData.tags as any)
+          : [modalStore.modalData.tags],
+        id: modalStore.selectedRowId,
+        recursive: "",
+        events: raiseEventsOn,
+        lastRun: new Date().toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }),
+      };
+      tableStore.updateRow(updatedRow);
+      // tableStore.setNameQuery("");
+      // tableStore.setDirectoryQuery("");
+      // tableStore.setOwnerQuery("");
+      // tableStore.setTradingPartnerQuery("");
+      // tableStore.setLastRunQuery("");
     }
     modalStore.closeDirectoryMonitorModal();
-    modalStore.originalRowName = "";
+    modalStore.selectedRowId = "";
     modalStore.setModalData({});
   };
 
@@ -118,6 +158,8 @@ const Table: React.FC<TableProps> = observer(({ columns }) => {
             page={page}
             pageSize={pageSize}
             onEdit={handleEdit}
+            openDropdownRowId={dropdownStore.openRowId ?? undefined}
+            setOpenDropdownRowId={dropdownStore.setOpenRowId}
           />
         ))}
       </div>

@@ -1,0 +1,91 @@
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.delete-modal-container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  padding: 32px 32px 24px 32px;
+  min-width: 340px;
+  max-width: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.delete-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #19344d;
+  cursor: pointer;
+}
+
+.delete-modal-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.delete-modal-content {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 8px;
+}
+
+.delete-modal-icon {
+  font-size: 1.4rem;
+  color: #19344d;
+  margin-right: 10px;
+}
+
+.delete-modal-text {
+  font-size: 1.1rem;
+  color: #19344d;
+}
+
+.delete-modal-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.delete-modal-ok {
+  background: #00646c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete-modal-cancel {
+  background: #fff;
+  color: #19344d;
+  border: 2px solid #19344d;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}

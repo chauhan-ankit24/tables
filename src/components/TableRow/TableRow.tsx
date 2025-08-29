@@ -1,16 +1,19 @@
 import React from "react";
 import { TableRowKeys } from "../../constants/table";
-import "./TableRow.css";
-import "../TableCellWidths.css";
+import "./TableRow.scss";
+import "../TableCellWidths.scss";
 import TableActions from "../TableActions/TableActions";
 
 export interface TableRowProps {
-  row: Record<string, unknown>;
+  row: import("../../constants/table").DirectoryMonitorRow;
   columns: string[];
   page: number;
   pageSize: number;
-  onEdit: (row: Record<string, unknown>) => void;
+  onEdit: (row: import("../../constants/table").DirectoryMonitorRow) => void;
+  openDropdownRowId?: string;
+  setOpenDropdownRowId?: (rowId: string | null) => void;
 }
+
 
 const TableRow: React.FC<TableRowProps> = ({
   row,
@@ -18,6 +21,8 @@ const TableRow: React.FC<TableRowProps> = ({
   page,
   pageSize,
   onEdit,
+  openDropdownRowId,
+  setOpenDropdownRowId
 }) => {
   return (
     <tr key={row[TableRowKeys.name] as string} className="table-row">
@@ -43,7 +48,13 @@ const TableRow: React.FC<TableRowProps> = ({
         );
       })}
       <td className="table-cell-width-spacer">
-        <TableActions onEdit={() => onEdit(row)} />
+        <TableActions
+          onEdit={() => onEdit(row)}
+          rowId={row[TableRowKeys.name] as string}
+          row={row}
+          openDropdownRowId={openDropdownRowId}
+          setOpenDropdownRowId={setOpenDropdownRowId}
+        />
       </td>
     </tr>
   );
